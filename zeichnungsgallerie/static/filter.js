@@ -13,6 +13,7 @@ const apply_filter = function () {
 
     console.log("Filter:", filter)
 
+    num_displayed = 0
     for (const element of document.getElementsByClassName("zeichnung")) {
         const zeichnung = element.getAttribute("zeichnung")
         const meta = records[zeichnung]
@@ -23,9 +24,11 @@ const apply_filter = function () {
                 var show = false
             }
         }
-
+        num_displayed += show
         element.style.display = show ? 'block' : 'none'
     }
+
+    document.getElementById("count").innerHTML = num_displayed
 
     for (const variable in unique) {
         var i = 0
