@@ -29,3 +29,12 @@ const apply_filter = function () {
     }
 
 }
+
+const reset_filter = function () {
+    for (const variable of variables) {
+        document.getElementById(variable).checked = true
+    }
+    apply_filter()
+}
+
+reset_filter()
