@@ -30,7 +30,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2">
+            <div class="col-sm-3 col-md-2">
                 <h2 class="mb-3">Filter</h2>
                 <form id="filter_form">
                     {% for variable, values in unique.items() %}
@@ -55,9 +55,9 @@
                 <button type="button" class="btn btn-danger" onclick="reset_filter()">Filter zurücksetzen</button>
             </div>
 
-            <div class="col-10">
+            <div class="col-sm-9 col-md-10">
                 <h2 class="mb-3">Zeichnungen</h2>
-                <div class="row row-cols-6 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
                     {% for index, data in records.items() %}
                     <div class="col zeichnung" zeichnung="{{ index }}">
                         <div class="card">
