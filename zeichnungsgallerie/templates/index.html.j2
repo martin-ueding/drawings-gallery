@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Zeichnungen</title>
+
+    <!-- Bootstrap CSS. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <script src="/static/bootstrap-dark-mode.js"></script>
+
+    <link rel="stylesheet" href="/static/simpleLightbox.min.css" />
+
+    <!-- Favicon. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/static/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <h2 class="mb-3">Filter</h2>
+                <form id="filter_form">
+                    {% for variable, values in unique.items() %}
+                    <div class="mb-3">
+                        <h5>{{ variable }}</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ variable }}" value=""
+                                id="{{ variable }}" checked onchange="apply_filter()">
+                            <label class="form-check-label" for="{{ variable }}"><i>Alle</i></label>
+                        </div>
+                        {% for value in values %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ variable }}" value="{{ value }}"
+                                id="{{ variable }}{{ loop.index }}" onchange="apply_filter()">
+                            <label class="form-check-label" for="{{ variable }}{{ loop.index }}">{{ value }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </form>
+            </div>
+
+            <div class="col-10">
+                <h2 class="mb-3">Zeichnungen</h2>
+                <div class="row row-cols-6 g-4">
+                    {% for index, data in records.items() %}
+                    <div class="col zeichnung" zeichnung="{{ index }}">
+                        <div class="card">
+                            <a class="for-lightbox" title="{{ index[:10] }} <b>{{ index[11:] }}</b>"
+                                href="big/{{ index }}.jpg">
+                                <img src="small/{{ index }}.jpg" class="card-img-top">
+                            </a>
+                            {# <div class="card-body">
+                                <h5 class="card-title">{{ index[11:] }}</h5>
+                                <p class="card-text">{{ data | tojson }}</p>
+                            </div> #}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const variables = {{ variables }}
+
+            const records = {{ records | tojson }}
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+        <script src="/static/filter.js"></script>
+
+        <script src="/static/simpleLightbox.min.js"></script>
+
+        <script type="text/javascript">
+            const lightbox = new SimpleLightbox({ elements: '.for-lightbox' });
+        </script>
+</body>
+
+</html>
