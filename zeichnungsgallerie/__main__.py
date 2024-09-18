@@ -3,6 +3,7 @@ import pathlib
 import json
 import subprocess
 
+import numpy as np
 import pandas as pd
 import jinja2
 
@@ -26,7 +27,7 @@ def main() -> None:
     df["Jahr"] = [int(i[:4]) for i in df.index]
 
     unique = {
-        col: sorted(v for v in df[col].unique() if not pd.isna(v))
+        col: sorted(simplify(v) for v in df[col].unique() if not pd.isna(v))
         for col in sorted(df.columns)
     }
 
@@ -79,6 +80,13 @@ def main() -> None:
                 ],
                 check=True,
             )
+
+
+def simplify(v):
+    if isinstance(v, np.int64):
+        return int(v)
+    else:
+        return v
 
 
 if __name__ == "__main__":

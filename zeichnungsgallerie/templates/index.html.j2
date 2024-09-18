@@ -44,15 +44,15 @@
                         {% for value in values %}
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="{{ variable }}" value="{{ value }}"
-                                id="{{ variable }}{{ loop.index }}" onchange="apply_filter()">
-                            <label class="form-check-label" for="{{ variable }}{{ loop.index }}">{{ value }}</label>
+                                id="{{ variable }}{{ loop.index0 }}" onchange="apply_filter()">
+                            <label class="form-check-label" for="{{ variable }}{{ loop.index0 }}">{{ value }}</label>
                         </div>
                         {% endfor %}
                     </div>
                     {% endfor %}
                 </form>
 
-                <button type="button" class="btn btn-danger" onclick="reset_filter()">Reset Filters</button>
+                <button type="button" class="btn btn-danger" onclick="reset_filter()">Filter zurücksetzen</button>
             </div>
 
             <div class="col-10">
@@ -78,7 +78,7 @@
 
         <script>
             const variables = {{ variables }}
-
+            const unique = {{ unique | tojson }}
             const records = {{ records | tojson }}
         </script>
 
