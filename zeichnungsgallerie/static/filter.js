@@ -34,6 +34,7 @@ const apply_filter = function () {
         var i = 0
         for (const u of unique[variable]) {
             var unique_here = []
+            var num_displayed = 0
             for (const zeichnung in records) {
                 const meta = records[zeichnung]
                 var show = true
@@ -45,6 +46,9 @@ const apply_filter = function () {
                         var show = false
                     }
                 }
+                if (meta[variable] == u && show) {
+                    num_displayed += 1
+                }
                 if (show) {
                     if (!unique_here.includes(meta[variable])) {
                         unique_here.push(meta[variable])
@@ -54,8 +58,10 @@ const apply_filter = function () {
 
 
             var id = `${variable}${i}`
+            var id_count = `${variable}${i}-count`
             console.log("ID:", id, "Unique Here:", unique_here)
             document.getElementById(id).toggleAttribute("disabled", !unique_here.includes(u))
+            document.getElementById(id_count).innerHTML = `(${num_displayed})`
             ++i
         }
     }

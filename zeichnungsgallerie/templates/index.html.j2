@@ -45,7 +45,8 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="{{ variable }}" value="{{ value }}"
                                 id="{{ variable }}{{ loop.index0 }}" onchange="apply_filter()">
-                            <label class="form-check-label" for="{{ variable }}{{ loop.index0 }}">{{ value }}</label>
+                            <label class="form-check-label" for="{{ variable }}{{ loop.index0 }}">{{ value }} <span
+                                    id="{{ variable }}{{ loop.index0 }}-count" class="text-secondary"></span></label>
                         </div>
                         {% endfor %}
                     </div>
