@@ -11,12 +11,7 @@ const apply_filter = function () {
 
     }
 
-    console.log(filter)
-
-    currently_unique = {}
-    for (const variable of variables) {
-        currently_unique[variable] = []
-    }
+    console.log("Filter:", filter)
 
     for (const element of document.getElementsByClassName("zeichnung")) {
         const zeichnung = element.getAttribute("zeichnung")
@@ -29,28 +24,35 @@ const apply_filter = function () {
             }
         }
 
-        console.log(zeichnung, show)
         element.style.display = show ? 'block' : 'none'
-
-
-        if (show) {
-            for (const variable of variables) {
-                if (!currently_unique[variable].includes(meta[variable])) {
-                    currently_unique[variable].push(meta[variable])
-                }
-            }
-        }
     }
-
-
-    console.log(currently_unique)
 
     for (const variable in unique) {
         var i = 0
         for (const u of unique[variable]) {
+            var unique_here = []
+            for (const zeichnung in records) {
+                const meta = records[zeichnung]
+                var show = true
+                for (const key in filter) {
+                    if (key == variable) {
+                        continue
+                    }
+                    if (meta[key] != filter[key]) {
+                        var show = false
+                    }
+                }
+                if (show) {
+                    if (!unique_here.includes(meta[variable])) {
+                        unique_here.push(meta[variable])
+                    }
+                }
+            }
+
+
             var id = `${variable}${i}`
-            console.log(id)
-            document.getElementById(id).toggleAttribute("disabled", !currently_unique[variable].includes(u))
+            console.log("ID:", id, "Unique Here:", unique_here)
+            document.getElementById(id).toggleAttribute("disabled", !unique_here.includes(u))
             ++i
         }
     }
