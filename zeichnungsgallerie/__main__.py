@@ -2,6 +2,7 @@ import argparse
 import pathlib
 import json
 import subprocess
+import shutil
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("base", type=pathlib.Path)
     parser.add_argument("out", type=pathlib.Path)
+    parser.add_argument("--filter", nargs="*")
     options = parser.parse_args()
 
     base: pathlib.Path = options.base
@@ -21,10 +23,24 @@ def main() -> None:
     paper = pd.read_excel(base / "Metadaten.ods", sheet_name="Papiere")
 
     df = pd.merge(drawings, paper, how="left")
+    df.sort_values("Dateiname", ascending=False, inplace=True)
     df.index = df["Dateiname"]
     del df["Dateiname"]
 
+    images_with_meta = set(df.index)
+    images_in_dir = {path.stem for path in base.glob("*.jpg")}
+    images_without_meta = images_in_dir - images_with_meta
+    if images_without_meta:
+        print("Images without meta data:")
+        for image in sorted(images_without_meta):
+            print(image)
+
     df["Jahr"] = [int(i[:4]) for i in df.index]
+
+    for f in options.filter:
+        key, value = f.split("=")
+        df = df.loc[df[key] == value].copy()
+        del df[key]
 
     unique = {
         col: sorted(simplify(v) for v in df[col].unique() if not pd.isna(v))
@@ -80,6 +96,8 @@ def main() -> None:
                 ],
                 check=True,
             )
+
+    shutil.copytree(pathlib.Path(__file__).parent / "static", out / "static")
 
 
 def simplify(v):
