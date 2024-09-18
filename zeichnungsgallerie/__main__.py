@@ -97,7 +97,7 @@ def main() -> None:
                 check=True,
             )
 
-    shutil.copytree(pathlib.Path(__file__).parent / "static", out / "static")
+    shutil.copytree(pathlib.Path(__file__).parent / "static", out / "static", dirs_exist_ok=True)
 
 
 def simplify(v):
